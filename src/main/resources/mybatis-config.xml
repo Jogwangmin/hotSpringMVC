@@ -6,9 +6,11 @@
 	<typeAliases>
 		<typeAlias type="com.hot.spring.member.domain.Member" alias="Member"/>
 		<typeAlias type="com.hot.spring.notice.domain.Notice" alias="Notice"/>
+		<typeAlias type="com.hot.spring.board.domain.Board" alias="Board"/>
 	</typeAliases>
 	<mappers>
 		<mapper resource="mappers/member/member-mapper.xml"/>
 		<mapper resource="mappers/notice-mapper.xml"/>
+		<mapper resource="mappers/board-mapper.xml"/>
 	</mappers>
 </configuration>

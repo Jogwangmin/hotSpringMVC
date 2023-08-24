@@ -136,16 +136,23 @@ public class MemberController {
 		}
 	}
 	
-	@RequestMapping(value="/member/mypage.kh", method=RequestMethod.GET)
+	@RequestMapping(value="/member/mypage.kh", method= {RequestMethod.GET, RequestMethod.POST})
+					// {RequestMethod.GET, RequestMethod.POST} 두개 다 사용 가능
 	public String showMyPage(
 			// 쿼리스트링 받기 위해서 RequestParam을 써줌
-			@RequestParam("memberId") String memberId
+			// @RequestParam("memberId") String memberId
 			// 모데엘 키와 값으로 데이터를 넣어주면 jsp에서 꺼내서 사용가능
+			HttpSession session
 			, Model model) {
 		// SELECT * FROM MEMBER_TBL WHERE MEMBER_ID = ?
 		// Exception 발생 시 에러메시지를 출력하기 위해 try ~ catch 설정해줌
 		try {
-			Member member = service.getMemberById(memberId);
+			String memberId = (String)session.getAttribute("memberId");
+			Member member = null;
+			if(memberId != "" && memberId != null) {
+				member = service.getMemberById(memberId);
+				
+			}
 			if(member != null) {
 				model.addAttribute("member", member);
 				return "member/mypage";

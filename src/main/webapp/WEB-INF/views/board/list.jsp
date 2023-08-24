@@ -7,11 +7,18 @@
 	<head>
 		<meta charset="UTF-8">
 		<title>공지사항 목록</title>
-		<link rel="stylesheet" href="../resources/css/notice/notice.css">
+		<link rel="stylesheet" href="../resources/css/board/board.css">
 	</head>
 	<body>
-		<h1>공지사항 목록</h1>
+		<h1>게시글 목록</h1>
 		<table>
+			<colgroup>
+				<col width="5%"></col>
+				<col width="40%"></col>
+				<col width="10%"></col>
+				<col width="15%"></col>
+				<col width="10%"></col>
+			</colgroup>
 			<thead>
 				<tr>
 					<th>번호</th>
@@ -25,21 +32,21 @@
 			<tbody>
 				<!-- list데이터는 items에 넣었고 var에서 설정한 변수로 list데이터에서 -->
 				<!-- 꺼낸 값을 사용하고 i의 값은 varStatus로 사용 -->
-				<c:forEach var="notice" items="${nList }" varStatus="i">
+				<c:forEach var="board" items="${bList }" varStatus="i">
 					<tr>
-						<td>${i.count }</td>			
-						<c:url var="detailUrl" value="/notice/detail.kh">
-							<c:param name="noticeNo" value="${notice.noticeNo }"></c:param>
+						<td>${board.boardNo }</td>			
+						<c:url var="detailUrl" value="/board/detail.kh">
+							<c:param name="boardNo" value="${board.boardNo }"></c:param>
 						</c:url>
-						<td><a href="${detailUrl }">${notice.noticeSubject }</a></td>			
-						<td>${notice.noticeWriter }</td>			
+						<td><a href="${detailUrl }">${board.boardTitle }</a></td>			
+						<td>${board.boardWriter }</td>			
 						<td>
-							<fmt:formatDate pattern="yyyy-MM-dd" value="${notice.nCreateDate }"></fmt:formatDate>
+							<fmt:formatDate pattern="yyyy-MM-dd" value="${board.bCreateDate }"></fmt:formatDate>
 							<!-- ${notice.nCreateDate } -->
 						</td>			
 						<td>
-							<c:if test="${!empty notice.noticeFilename }">0</c:if>
-							<c:if test="${empty notice.noticeFilename }">X</c:if>
+							<c:if test="${!empty board.boardFilename }">0</c:if>
+							<c:if test="${empty board.boardFilename }">X</c:if>
 						</td>			
 <!-- 						<td> -->
 <%-- 							<fmt:formatNumber pattern="##,###,###" value="1230000"></fmt:formatNumber> --%>
@@ -50,17 +57,29 @@
 			<tfoot>
 				<tr align="center">
 					<td colspan="5">
+						<c:if test="${pInfo.startNavi != 1 }">
+							<c:url var="prevUrl" value="/board/list.kh">
+								<c:param name="page" value="${pInfo.startNavi - 1 }"></c:param>
+							</c:url>
+							<a href="${prevUrl }">[이전]</a>
+						</c:if>
 						<c:forEach begin="${pInfo.startNavi }" end="${pInfo.endNavi }" var="p">
-							<c:url var="pageUrl" value="/notice/list.kh">
+							<c:url var="pageUrl" value="/board/list.kh">
 								<c:param name="page" value="${p }"></c:param>
 							</c:url>
 							<a href="${pageUrl }">${p }</a>&nbsp;
 						</c:forEach>
+						<c:if test="${pInfo.endNavi != pInfo.naviTotalCount }">
+							<c:url var="nextUrl" value="/board/list.kh">
+								<c:param name="page" value="${pInfo.endNavi + 1 }"></c:param>
+							</c:url>
+							<a href="${nextUrl }">[다음]</a>
+						</c:if>
 					</td>
 				</tr>
 				<tr>
 					<td colspan="4">
-						<form action="/notice/search.kh" method="get">
+						<form action="/board/search.kh" method="get">
 							<select name="searchCondition">
 								<option value="all">전체</option>
 								<option value="writer" selected>작성자</option>
