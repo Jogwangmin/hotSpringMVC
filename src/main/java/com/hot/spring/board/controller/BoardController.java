@@ -20,25 +20,34 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.hot.spring.board.domain.Board;
 import com.hot.spring.board.domain.PageInfo;
+import com.hot.spring.board.domain.Reply;
 import com.hot.spring.board.service.BoardService;
+import com.hot.spring.board.service.ReplyService;
 
 @Controller
+@RequestMapping("/board")
 public class BoardController {
 	
 	@Autowired
 	private BoardService bService;
+	@Autowired
+	private ReplyService rService;
 	
-	@RequestMapping(value="/board/detail.kh", method=RequestMethod.GET)
+	@RequestMapping(value="/detail.kh", method=RequestMethod.GET)
 	public ModelAndView showBoardDetail(ModelAndView mv
 			, @RequestParam("boardNo") Integer boardNo) {
 		try {
 			Board boardOne = bService.selectBoardByNo(boardNo);
 			if(boardOne != null) {
+			List<Reply> replyList = rService.selectReplyList(boardNo);
+				if(replyList.size() > 0) {
+					mv.addObject("rList", replyList);
+				}
 				mv.addObject("board", boardOne);
 				mv.setViewName("board/detail");
 			}else {
 				mv.addObject("msg", "게시글 등록이 완료되지 않았습니다");
-				mv.addObject("msg", "게시글 상세 조회 실패");
+				mv.addObject("msg", "게시글 등록 실패");
 				mv.addObject("url", "/board/list.kh");
 				mv.setViewName("common/errorPage");
 			}
@@ -52,7 +61,7 @@ public class BoardController {
 	}
 	
 	
-	@RequestMapping(value="/board/list.kh", method=RequestMethod.GET)
+	@RequestMapping(value="/list.kh", method=RequestMethod.GET)
 	public ModelAndView showBoardList(
 			@RequestParam(value="page", required=false, defaultValue="1") Integer currentPage
 			, ModelAndView mv) {
@@ -63,13 +72,13 @@ public class BoardController {
 			if(!bList.isEmpty()) {
 				mv.addObject("bList", bList).addObject("pInfo", pInfo).setViewName("board/list");
 			}else {
-				mv.addObject("msg", "게시글 등록이 완료되지 않았습니다");
+				mv.addObject("msg", "게시글 조회가 완료되지 않았습니다");
 				mv.addObject("msg", "게시글 상세 조회 실패");
 				mv.addObject("url", "/board/list.kh");
 				mv.setViewName("common/errorPage");
 			}
 		} catch (Exception e) {
-			mv.addObject("msg", "게시글 등록이 완료되지 않았습니다");
+			mv.addObject("msg", "게시글 조회가 완료되지 않았습니다");
 			mv.addObject("msg", e.getMessage());
 			mv.addObject("url", "/board/write.kh");
 			mv.setViewName("common/errorPage");
@@ -93,14 +102,14 @@ public class BoardController {
 		return pInfo;
 	}
 	
-	@RequestMapping(value="/board/write.kh", method=RequestMethod.GET)
+	@RequestMapping(value="/write.kh", method=RequestMethod.GET)
 	public ModelAndView showWriteForm(ModelAndView mv) {
 		mv.setViewName("board/write");
 //		return "board/write";
 		return mv;
 	}
 	
-	@RequestMapping(value="/board/write.kh", method=RequestMethod.POST)
+	@RequestMapping(value="/write.kh", method=RequestMethod.POST)
 	public ModelAndView boardRegister(
 			ModelAndView mv
 			, @ModelAttribute Board board

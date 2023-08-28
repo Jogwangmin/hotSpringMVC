@@ -28,7 +28,9 @@
 					<input type="file" name="uploadFile">
 				</li>
 			</ul>
-			<input type="submit" value="등록">
+			<div>
+				<input type="submit" value="등록">
+			</div>
 		</form>
 	</body>
 </html>

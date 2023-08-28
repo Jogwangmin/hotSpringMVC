@@ -20,7 +20,7 @@
 <%-- 				<input type="hidden" name="memberId" value="${memberId }"> --%>
 				<input type="submit" value="마이페이지">
 			</form>
-			<a href="/member/mypage.kh">마이페이지</a>
+			<a href="/member/mypage.kh">마이페이지</a> <a href="/board/list.kh">게시판</a>
 		</c:if>
 	</body>
 </html>
