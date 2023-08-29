@@ -17,12 +17,20 @@ public interface ReplyStore {
 	int insertReply(SqlSession sqlSession, Reply reply);
 
 	/**
-	 * 댓글 수정 Store
+	 * 게시글 댓글 수정 Store
 	 * @param sqlSession
 	 * @param reply
 	 * @return
 	 */
 	int updateReply(SqlSession sqlSession, Reply reply);
+
+	/**
+	 * 게시글 댓글 삭제 Service
+	 * @param sqlSession
+	 * @param reply
+	 * @return
+	 */
+	int deleteReply(SqlSession sqlSession, Reply reply);
 
 	/**
 	 * 댓글 전체 조회 Store
